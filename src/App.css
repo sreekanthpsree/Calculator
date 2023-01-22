@@ -48,11 +48,21 @@ body {
   font-size: 25px;
   align-items: flex-end;
 }
+.digit {
+  background-color: rgb(198, 164, 12);
+  color: white;
+  border-radius: 75px;
+  margin: 7px;
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+}
 
 .output .currentValue {
   font-size: 40px;
   align-items: flex-end;
 }
+digitbutton,
 button {
   background-color: rgb(198, 164, 12);
   color: white;
@@ -62,7 +72,7 @@ button {
 }
 button:hover {
   transition: 500ms;
-  background-color: rgb(233, 225, 213);
+  background-color: rgb(243, 243, 242);
   color: rgb(5, 5, 5);
 }
 #clear {
@@ -80,6 +90,8 @@ button:active {
   outline: none;
 }
 .symbols {
-  background-color: rgb(8, 160, 46);
   background-color: rgb(18, 98, 141);
+}
+#del {
+  background-color: red;
 }

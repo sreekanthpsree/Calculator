@@ -8,7 +8,6 @@ function App() {
   const [previouseValue, setPreviousValue] = useState("");
   const [operator, setOperator] = useState("");
   function resultHandler() {
-    console.log(operator, currentValue, previouseValue);
     if (operator === "/") {
       let results = parseFloat(previouseValue) / parseFloat(currentValue);
       setPreviousValue(results);
@@ -34,11 +33,9 @@ function App() {
 
   function digitHandler(e) {
     let digit = e.target.value;
-    console.log(typeof parseFloat(digit));
 
     if (previouseValue && operator) {
       setCurrentValue(currentValue.concat(digit));
-      console.log(typeof parseFloat(currentValue));
     } else if (!previouseValue) {
       if (digit === "0" && currentValue === "0") {
         return currentValue;
