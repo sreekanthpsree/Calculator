@@ -1,85 +1,154 @@
 import React, { useState } from "react";
 import "./App.css";
+import DigitButton from "./DigitButton";
+import OperationButton from "./OperationButton";
+
 function App() {
-  const [result, setResult] = useState("");
-  const clickHandler = (e) => {
-    setResult(result.concat(e.target.name));
-  };
-  const clear = () => {
-    setResult("");
-  };
-  const del = () => {
-    setResult(result.slice(0, result.length - 1));
-  };
-  const calculate = () => {
-    try {
-      setResult(eval(result).toString());
-    } catch (err) {
-      setResult("Error");
+  const [currentValue, setCurrentValue] = useState("");
+  const [previouseValue, setPreviousValue] = useState("");
+  const [operator, setOperator] = useState("");
+  function resultHandler() {
+    console.log(operator, currentValue, previouseValue);
+    if (operator === "/") {
+      let results = parseFloat(previouseValue) / parseFloat(currentValue);
+      setPreviousValue(results);
+      setCurrentValue("");
+      setOperator("");
+    } else if (operator === "+") {
+      let results = parseFloat(previouseValue) + parseFloat(currentValue);
+      setPreviousValue(results);
+      setCurrentValue("");
+      setOperator("");
+    } else if (operator === "-") {
+      let results = parseFloat(previouseValue) - parseFloat(currentValue);
+      setPreviousValue(results);
+      setCurrentValue("");
+      setOperator("");
+    } else if (operator === "*") {
+      let results = parseFloat(previouseValue) * parseFloat(currentValue);
+      setPreviousValue(results);
+      setCurrentValue("");
+      setOperator("");
     }
-  };
+  }
+
+  function digitHandler(e) {
+    let digit = e.target.value;
+    console.log(typeof parseFloat(digit));
+
+    if (previouseValue && operator) {
+      setCurrentValue(currentValue.concat(digit));
+      console.log(typeof parseFloat(currentValue));
+    } else if (!previouseValue) {
+      if (digit === "0" && currentValue === "0") {
+        return currentValue;
+      }
+      if (digit === "." && currentValue.includes(".")) {
+        return currentValue;
+      }
+      return setCurrentValue(currentValue.concat(digit));
+    }
+  }
+  function operationhandler(e) {
+    let operators = e.target.value;
+    if (previouseValue || currentValue) {
+      setOperator(operators);
+    }
+    if (previouseValue && currentValue && operator) {
+      resultHandler();
+    } else if (previouseValue) {
+      return;
+    } else {
+      setPreviousValue(currentValue);
+    }
+    setCurrentValue("");
+  }
+  function clearHandler() {
+    setCurrentValue("");
+    setPreviousValue("");
+    setOperator("");
+  }
   return (
     <>
       <div className="container">
         <div className="output">
-          <div className="previouseValue"></div>
-          <div className="currentValue">{result}</div>
-          {/* <input id="text" type="text" value={result} /> */}
+          <div className="previouseValue">
+            {previouseValue}
+            {operator}
+          </div>
+          <div className="currentValue">{currentValue}</div>
         </div>
         <div className="keypad">
-          <button id="clear" onClick={clear}>
+          <button id="clear" onClick={clearHandler}>
             AC
           </button>
-          <button className="symbols" id="del" onClick={del}>
-            DEL
-          </button>
+          <button id="del">DEL</button>
 
-          <button className="symbols" name="/" onClick={clickHandler}>
+          <OperationButton
+            operation="/"
+            className="symbols"
+            click={operationhandler}
+          >
             &divide;
-          </button>
-          <button name="7" onClick={clickHandler}>
+          </OperationButton>
+          <DigitButton digit="7" click={digitHandler}>
             7
-          </button>
-          <button name="8" onClick={clickHandler}>
+          </DigitButton>
+          <DigitButton digit="8" click={digitHandler}>
             8
-          </button>
-          <button name="9" onClick={clickHandler}>
+          </DigitButton>
+          <DigitButton digit="9" click={digitHandler}>
             9
-          </button>
-          <button className="symbols" name="*" onClick={clickHandler}>
+          </DigitButton>
+
+          <OperationButton
+            operation="*"
+            className="symbols"
+            click={operationhandler}
+          >
             &times;
-          </button>
-          <button name="4" onClick={clickHandler}>
-            4
-          </button>
-          <button name="5" onClick={clickHandler}>
-            5
-          </button>
-          <button name="6" onClick={clickHandler}>
+          </OperationButton>
+          <DigitButton digit="6" click={digitHandler}>
             6
-          </button>
-          <button className="symbols" name="-" onClick={clickHandler}>
+          </DigitButton>
+          <DigitButton digit="5" click={digitHandler}>
+            5
+          </DigitButton>
+          <DigitButton digit="4" click={digitHandler}>
+            4
+          </DigitButton>
+
+          <OperationButton
+            operation="-"
+            className="symbols"
+            click={operationhandler}
+          >
             -
-          </button>
-          <button name="1" onClick={clickHandler}>
-            1
-          </button>
-          <button name="2" onClick={clickHandler}>
-            2
-          </button>
-          <button name="3" onClick={clickHandler}>
+          </OperationButton>
+          <DigitButton digit="3" click={digitHandler}>
             3
-          </button>
-          <button className="symbols" name="+" onClick={clickHandler}>
+          </DigitButton>
+          <DigitButton digit="2" click={digitHandler}>
+            2
+          </DigitButton>
+          <DigitButton digit="1" click={digitHandler}>
+            1
+          </DigitButton>
+
+          <OperationButton
+            operation="+"
+            className="symbols"
+            click={operationhandler}
+          >
             +
-          </button>
-          <button name="0" onClick={clickHandler}>
+          </OperationButton>
+          <DigitButton digit="0" click={digitHandler}>
             0
-          </button>
-          <button name="." onClick={clickHandler}>
+          </DigitButton>
+          <DigitButton digit="." click={digitHandler}>
             .
-          </button>
-          <button id="result" onClick={calculate}>
+          </DigitButton>
+          <button id="result" onClick={resultHandler}>
             =
           </button>
         </div>
